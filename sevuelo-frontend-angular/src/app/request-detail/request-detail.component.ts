@@ -6,16 +6,15 @@ import { RequestService } from '../request.service';
 @Component({
   selector: 'app-request-detail',
   templateUrl: './request-detail.component.html',
-  styleUrls: ['./request-detail.component.scss']
+  styleUrls: ['./request-detail.component.scss'],
 })
 export class RequestDetailComponent implements OnInit {
-
   @Input() request: Request;
 
   constructor(
     private requestService: RequestService,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getRequest();
@@ -27,17 +26,22 @@ export class RequestDetailComponent implements OnInit {
 
   getRequest(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.requestService.getRequest(Number.parseInt(id))
-      .subscribe(request => this.request = request);
+    this.requestService
+      .getRequest(Number.parseInt(id))
+      .subscribe((request) => (this.request = request));
   }
 
   reserve(): void {
-    this.requestService.reserveRequest(this.request)
-      .subscribe((newRequest) => {
-        this.request = newRequest
-        this.previousState();
-      }
-    );
+    this.requestService.reserveRequest(this.request).subscribe((newRequest) => {
+      this.request = newRequest;
+      this.previousState();
+    });
   }
 
+  restore(): void {
+    this.requestService.restoreStatus(this.request).subscribe((newRequest) => {
+      this.request = newRequest;
+      this.previousState();
+    });
+  }
 }

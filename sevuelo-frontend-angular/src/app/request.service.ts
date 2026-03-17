@@ -5,25 +5,22 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequestService {
-
   private url = 'http://localhost:8080/api';
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   getRequests(): Observable<Request[]> {
     // return of(REQUESTS);
     return this.http.get<Request[]>(`${this.url}/requests`);
   }
-  
+
   getRequest(id: number): Observable<Request> {
     return this.http.get<Request>(`${this.url}/requests/${id}`);
   }
@@ -32,8 +29,15 @@ export class RequestService {
     return this.http.put(`${this.url}/reserve`, request, this.httpOptions);
   }
 
-  addRequest(request: Request): Observable<Request> {
-    return this.http.post<Request>(`${this.url}/requests`, request, this.httpOptions);
+  restoreStatus(request: Request): Observable<any> {
+    return this.http.put(`${this.url}/new`, request, this.httpOptions);
   }
 
+  addRequest(request: Request): Observable<Request> {
+    return this.http.post<Request>(
+      `${this.url}/requests`,
+      request,
+      this.httpOptions,
+    );
+  }
 }

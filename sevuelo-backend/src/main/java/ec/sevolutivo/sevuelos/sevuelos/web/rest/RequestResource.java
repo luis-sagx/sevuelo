@@ -53,5 +53,11 @@ public class RequestResource {
         requestRepository.save(request);
     }
 
+    @PutMapping("/new")
+    public void restoreStatus(@RequestBody Request request) {
+        log.debug("REST request to create a new request");
+        request.setStatus(RequestStatus.NEW);
+        requestRepository.save(request);
+    }
 
 }
